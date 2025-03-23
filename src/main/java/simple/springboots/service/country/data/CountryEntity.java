@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
+import simple.springboots.service.country.model.CountryJson;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -51,4 +52,5 @@ public class CountryEntity {
                 countryCode
         );
     }
+
 }

@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface CountryRepository extends JpaRepository<CountryEntity, UUID> {
 
-    CountryEntity findCountryEntitiesByCountryCode(String countryCode);
+    CountryEntity findByCountryCode(String countryCode);
 }
