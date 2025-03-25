@@ -1,0 +1,19 @@
+type Query{
+    allGqlCountries(page: Int, size: Int): CountryConnection
+}
+
+type Mutation {
+    addGqlCountry(input: CountryInput!): Country!
+    editGqlCountryName(input: CountryInput!): Country!
+}
+
+type Country {
+    id: ID!
+    countryName: String!
+    countryCode: String!
+}
+
+input CountryInput {
+    countryName: String!
+    countryCode: String!
+}
