@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
+import simple.springboots.service.country.domain.graphql.CountryGql;
 import simple.springboots.service.country.model.CountryJson;
 
 import java.util.Objects;
@@ -48,6 +49,14 @@ public class CountryEntity {
 
     public CountryJson toJson() {
         return new CountryJson(
+                countryName,
+                countryCode
+        );
+    }
+
+    public CountryGql toCountryGql() {
+        return new CountryGql(
+                id,
                 countryName,
                 countryCode
         );

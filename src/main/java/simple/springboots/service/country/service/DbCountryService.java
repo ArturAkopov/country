@@ -1,10 +1,15 @@
 package simple.springboots.service.country.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import simple.springboots.service.country.data.CountryEntity;
 import simple.springboots.service.country.data.CountryRepository;
 import simple.springboots.service.country.domain.Country;
+import simple.springboots.service.country.domain.graphql.CountryGql;
+import simple.springboots.service.country.domain.graphql.CountryInputGql;
+import simple.springboots.service.country.model.CountryJson;
 
 import java.util.List;
 
@@ -31,25 +36,56 @@ public class DbCountryService implements CountryService {
     }
 
     @Override
-    public void addCountry(String countryName, String countryCode) {
-        CountryEntity countryEntity = countryRepository.save(
+    public Page<CountryGql> allGqlCountries(Pageable pageable) {
+        return countryRepository.findAll(pageable)
+                .map(ce -> new CountryGql(
+                        ce.getId(),
+                        ce.getCountryName(),
+                        ce.getCountryCode()
+                ));
+    }
+
+    @Override
+    public CountryJson addCountry(String countryName, String countryCode) {
+        return countryRepository.save(
                 new CountryEntity(
                         null,
                         countryName,
                         countryCode
                 )
-        );
-
+        ).toJson();
     }
 
     @Override
-    public void editCountryName(String countryCode, String countryName) {
+    public CountryGql addGqlCountry(CountryInputGql input) {
+        return countryRepository.save(
+                new CountryEntity(
+                        null,
+                        input.countryName(),
+                        input.countryCode()
+                )
+        ).toCountryGql();
+    }
+
+    @Override
+    public CountryJson editCountryName(String countryCode, String countryName) {
         CountryEntity country = countryRepository.findByCountryCode(countryCode);
-        countryRepository.save(
+        return countryRepository.save(
                 new CountryEntity(
                         country.getId(),
                         countryName,
                         countryCode)
-        );
+        ).toJson();
+    }
+
+    @Override
+    public CountryGql editGqlCountryName(CountryInputGql input) {
+        CountryEntity country = countryRepository.findByCountryCode(input.countryCode());
+        return countryRepository.save(
+                new CountryEntity(
+                        country.getId(),
+                        input.countryName(),
+                        input.countryCode())
+        ).toCountryGql();
     }
 }

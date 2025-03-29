@@ -1,6 +1,11 @@
 package simple.springboots.service.country.service;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import simple.springboots.service.country.domain.Country;
+import simple.springboots.service.country.domain.graphql.CountryGql;
+import simple.springboots.service.country.domain.graphql.CountryInputGql;
+import simple.springboots.service.country.model.CountryJson;
 
 import java.util.List;
 
@@ -8,7 +13,13 @@ public interface CountryService {
 
     List<Country> allCountries();
 
-    void addCountry(String countryName, String countryCode);
+    Slice<CountryGql> allGqlCountries(Pageable pageable);
 
-    void editCountryName(String countryCode, String countryName);
+    CountryJson addCountry(String countryName, String countryCode);
+
+    CountryGql addGqlCountry(CountryInputGql input);
+
+    CountryJson editCountryName(String countryCode, String countryName);
+
+    CountryGql editGqlCountryName(CountryInputGql input);
 }
