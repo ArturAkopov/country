@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package country;
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "country";
+option java_outer_classname = "CountryProto";
+
+service CountryService {
+  rpc allCountries(google.protobuf.Empty) returns (CountryResponse) {}
+  rpc addCountry(CountryRequest) returns (CountryResponse) {}
+  rpc randomCountry(CountRequest) returns (stream CountryResponse) {}
+  rpc addCountries(stream CountryRequest) returns (CountResponse) {}
+}
+
+message CountryRequest {
+  optional string countryName = 1;
+  optional string countryCode = 2;
+}
+
+message CountryResponse {
+  repeated Country countries = 1;
+}
+
+message Country {
+  optional string countryName = 1;
+  optional string countryCode = 2;
+}
+
+message CountRequest {
+  optional uint32 count = 1;
+}
+
+message CountResponse {
+  optional uint32 count = 1;
+}

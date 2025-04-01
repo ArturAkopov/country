@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import simple.springboots.service.country.data.CountryEntity;
 import simple.springboots.service.country.data.CountryRepository;
-import simple.springboots.service.country.domain.Country;
 import simple.springboots.service.country.domain.graphql.CountryGql;
 import simple.springboots.service.country.domain.graphql.CountryInputGql;
 import simple.springboots.service.country.model.CountryJson;
@@ -24,10 +23,10 @@ public class DbCountryService implements CountryService {
     }
 
     @Override
-    public List<Country> allCountries() {
+    public List<CountryJson> allCountries() {
         return countryRepository.findAll()
                 .stream()
-                .map(ce -> new Country(
+                .map(ce -> new CountryJson(
                                 ce.getCountryName(),
                                 ce.getCountryCode()
                         )
