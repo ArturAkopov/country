@@ -2,7 +2,6 @@ package simple.springboots.service.country.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import simple.springboots.service.country.domain.Country;
 import simple.springboots.service.country.model.CountryJson;
 import simple.springboots.service.country.service.CountryService;
 
@@ -20,7 +19,7 @@ public class CountryController {
     }
 
     @GetMapping("/all")
-    public List<Country> allCountries() {
+    public List<CountryJson> allCountries() {
         return countryService.allCountries();
     }
 
