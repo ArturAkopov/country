@@ -3,6 +3,8 @@ plugins {
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.google.protobuf' version '0.9.4'
+    //SOUP
+    id 'com.github.edeandrea.xjc-generation' version '1.6'
 }
 
 group = 'simple.springboots.service'
@@ -34,17 +36,46 @@ dependencies {
     implementation 'io.grpc:grpc-protobuf'
     implementation 'io.grpc:grpc-stub'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //SOUP
+    implementation('org.springframework.boot:spring-boot-starter-web-services') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    xjc 'org.glassfish.jaxb:jaxb-xjc:4.0.5'
+    implementation 'wsdl4j:wsdl4j:1.6.3'
+
     implementation 'org.springframework.boot:spring-boot-starter-graphql'
     implementation 'com.tailrocks.graphql:graphql-datetime-spring-boot-starter:6.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.data:spring-data-commons'
     implementation 'org.flywaydb:flyway-core:10.17.1'
     implementation 'org.flywaydb:flyway-database-postgresql:10.17.1'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     runtimeOnly 'org.postgresql:postgresql:42.7.3'
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+xjcGeneration {
+    defaultAdditionalXjcOptions = ['encoding': 'UTF-8']
+    schemas {
+        wsdlSchema {
+            schemaRootDir = "$projectDir/src/main/resources"
+            schemaFile = 'country.xsd'
+            javaPackageName = 'xml.country'
+            sourceSet = 'main'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir('src/main/java')
+            srcDir("$buildDir/generated-sources/main/xjc")
+        }
+    }
 }
 
 protobuf {
