@@ -12,8 +12,11 @@ import simple.springboots.service.country.domain.graphql.CountryInputGql;
 import simple.springboots.service.country.service.CountryService;
 import xml.country.*;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 
 @Endpoint
+@ParametersAreNonnullByDefault
 public class CountryEndpoint {
 
     private final CountryService countryService;
