@@ -3,6 +3,7 @@ package simple.springboots.service.country.service.impl;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 import simple.springboots.service.country.model.CountryJson;
@@ -16,7 +17,8 @@ public class CountrySoupClient extends WebServiceGatewaySupport implements Count
 
     private static final Logger log = LoggerFactory.getLogger(CountryClient.class);
 
-    private static final String countryBaseUri = "http://127.0.0.1:8282";
+    @Value("${country.base-uri}")  // Выносим URL в настройки
+    private String countryBaseUri;
 
     @Override
     @NonNull
@@ -32,9 +34,8 @@ public class CountrySoupClient extends WebServiceGatewaySupport implements Count
         log.info("Requesting location for {}", country);
 
         return (CountryResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(countryBaseUri+"/ws/country", request,
-                        new SoapActionCallback(
-                                ""));
+                .marshalSendAndReceive(countryBaseUri + "/ws/country", request,
+                        new SoapActionCallback("http://country/AddCountry"));
     }
 
     @Override
@@ -51,9 +52,8 @@ public class CountrySoupClient extends WebServiceGatewaySupport implements Count
         log.info("Requesting location for {}", country);
 
         return (CountryResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(countryBaseUri+"/ws/country", request,
-                        new SoapActionCallback(
-                                ""));
+                .marshalSendAndReceive(countryBaseUri + "/ws/country", request,
+                        new SoapActionCallback("http://country/EditCountry"));
     }
 
     @Override
@@ -65,8 +65,7 @@ public class CountrySoupClient extends WebServiceGatewaySupport implements Count
         request.setSize(size);
 
         return (CountriesResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(countryBaseUri+"/ws/country", request,
-                        new SoapActionCallback(
-                                ""));
+                .marshalSendAndReceive(countryBaseUri + "/ws/country", request,
+                        new SoapActionCallback("http://country/GetCountries"));
     }
 }

@@ -12,6 +12,7 @@ import simple.springboots.service.country.domain.graphql.CountryInputGql;
 import simple.springboots.service.country.service.CountryService;
 import xml.country.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 
@@ -35,10 +36,7 @@ public class CountryEndpoint {
 
         final CountryGql country = countryService.addGqlCountry(inputGql);
 
-        Country xmlCountry = new Country();
-        xmlCountry.setId(country.id().toString());
-        xmlCountry.setCountryName(country.countryName());
-        xmlCountry.setCountryCode(country.countryCode());
+        Country xmlCountry = getXmlCountry(country);
 
         CountryResponse response = new CountryResponse();
         response.setCountry(xmlCountry);
@@ -54,10 +52,7 @@ public class CountryEndpoint {
 
         final CountryGql country = countryService.editGqlCountryName(inputGql);
 
-        Country xmlCountry = new Country();
-        xmlCountry.setId(country.id().toString());
-        xmlCountry.setCountryName(country.countryName());
-        xmlCountry.setCountryCode(country.countryCode());
+        Country xmlCountry = getXmlCountry(country);
 
         CountryResponse response = new CountryResponse();
         response.setCountry(xmlCountry);
@@ -77,14 +72,17 @@ public class CountryEndpoint {
         response.setTotalElements(countries.getTotalElements());
         response.getCountries().addAll(
                 countries.getContent().stream().map(
-                        countryGql -> {
-                            Country xmlCountry = new Country();
-                            xmlCountry.setId(countryGql.id().toString());
-                            xmlCountry.setCountryName(countryGql.countryName());
-                            xmlCountry.setCountryCode(countryGql.countryCode());
-                            return xmlCountry;
-                        }
+                        this::getXmlCountry
                 ).toList());
         return response;
+    }
+
+    @Nonnull
+    private Country getXmlCountry(CountryGql countryGql){
+        Country result = new Country();
+        result.setId(countryGql.id().toString());
+        result.setCountryName(countryGql.countryName());
+        result.setCountryCode(countryGql.countryCode());
+        return result;
     }
 }
